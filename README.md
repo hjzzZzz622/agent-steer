@@ -139,7 +139,7 @@ unknown.
 | --- | --- | --- |
 | [Claude Code](src/agent_steer/adapters/claude_code/README.md) | SQLite CLI + Hooks (MCP deferred) | Runnable local MVP |
 | [Codex](src/agent_steer/adapters/codex/README.md) | App Server stdio + turn/steer | Runnable adapter; protocol tested |
-| [LangGraph](src/agent_steer/adapters/langgraph/README.md) | Node middleware / checkpoint | Design namespace only |
+| [LangGraph](src/agent_steer/adapters/langgraph/README.md) | Node middleware + checkpoint thread ID | Runnable boundary; protocol tested |
 
 The Claude Code MVP shares SQLite across processes and uses explicit session IDs.
 MCP transport is deferred. Its emitted receipt is separate from explicit acknowledgement;
