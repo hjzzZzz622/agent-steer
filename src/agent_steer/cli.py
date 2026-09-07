@@ -15,6 +15,13 @@ def main(argv=None):
     config = sub.add_parser('claude-settings', help='generate a new settings file for claude --settings')
     config.add_argument('--output', required=True)
     sub.add_parser('claude-hook', help='read Claude hook JSON on stdin')
+    codex = sub.add_parser('codex-run', help='start a Codex App Server turn and accept steering')
+    codex.add_argument('prompt')
+    codex.add_argument('--cwd', required=True)
+    codex.add_argument('--model', required=True)
+    codex.add_argument('--codex-bin', default='codex')
+    codex.add_argument('--timeout', type=float, default=300)
+    codex.add_argument('--sandbox', choices=('read-only', 'workspace-write'), default='read-only')
     sub.add_parser('sessions', help='list observed sessions; last_seen is not a liveness guarantee')
     for name in ('submit', 'messages', 'ack', 'retry'):
         command = sub.add_parser(name)
@@ -36,6 +43,17 @@ def main(argv=None):
             print(json.dumps({'settings': str(output), 'db': db_path}))
             return 0
         queue = SQLiteSteeringQueue(db_path)
+        if args.command == 'codex-run':
+            from .adapters.codex.runner import run_session
+            if args.timeout <= 0:
+                raise ValueError('timeout must be positive')
+            def output(event):
+                print(json.dumps(event, ensure_ascii=False), flush=True)
+            result = run_session(queue, args.prompt, args.cwd, args.model,
+                                 timeout=args.timeout, codex_bin=args.codex_bin,
+                                 sandbox=args.sandbox, sink=output)
+            print(json.dumps(result, ensure_ascii=False))
+            return 0 if result['status'] == 'completed' else 1
         if args.command == 'claude-hook':
             handle(queue, json.load(sys.stdin), sys.stdout)
             return 0
@@ -45,13 +63,13 @@ def main(argv=None):
             result = queue.messages(args.session)
         elif args.command == 'submit':
             if args.session not in {s['session_id'] for s in queue.sessions()}:
-                raise ValueError('unknown session; start Claude with the generated settings and run sessions')
+                raise ValueError('unknown session; start a configured agent session and run sessions')
             result = queue.submit(args.session, args.text).to_dict()
         else:
             getattr(queue, args.command)(args.session, args.message_id)
             result = {'ok': True}
         print(json.dumps(result, ensure_ascii=False))
         return 0
-    except (ValueError, KeyError, OSError, sqlite3.Error) as exc:
+    except (ValueError, KeyError, OSError, sqlite3.Error, RuntimeError, EOFError) as exc:
         print(f'agent-steer: {exc}', file=sys.stderr)
         return 1

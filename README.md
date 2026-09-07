@@ -2,10 +2,11 @@
 
 A lightweight runtime steering layer for AI agents — inject guidance into running agents without restarting the task.
 
-**Status: v0.2.0 alpha.** The Python core and a Claude Code command-hook MVP
+**Status: v0.3.0 alpha.** The Python core, Claude Code hooks and Codex App Server adapter
 are implemented. Start with the [Claude Code setup and acceptance guide](src/agent_steer/adapters/claude_code/README.md)
-to send guidance from another terminal through a shared SQLite inbox. Codex and
-LangGraph remain reserved integration boundaries. Real Claude model behavior still
+to send guidance from another terminal through a shared SQLite inbox. See also the
+[Codex setup and benchmark guide](src/agent_steer/adapters/codex/README.md).
+LangGraph remains a reserved integration boundary. Real model behavior still
 requires user acceptance testing; the automated suite exercises real subprocesses.
 
 ## Why / 核心动机
@@ -137,7 +138,7 @@ unknown.
 | Adapter | Reserved integration | Current implementation |
 | --- | --- | --- |
 | [Claude Code](src/agent_steer/adapters/claude_code/README.md) | SQLite CLI + Hooks (MCP deferred) | Runnable local MVP |
-| [Codex](src/agent_steer/adapters/codex/README.md) | MCP / App Server | Design namespace only |
+| [Codex](src/agent_steer/adapters/codex/README.md) | App Server stdio + turn/steer | Runnable adapter; protocol tested |
 | [LangGraph](src/agent_steer/adapters/langgraph/README.md) | Node middleware / checkpoint | Design namespace only |
 
 The Claude Code MVP shares SQLite across processes and uses explicit session IDs.
@@ -152,7 +153,7 @@ src/agent_steer/
   adapters/
     base.py         # tested cooperative boundary helper
     claude_code/    # working command hook + setup guide
-    codex/          # MCP / App Server extension point
+    codex/          # App Server client and same-turn steering
     langgraph/      # middleware / checkpoint extension point
 examples/           # runnable date-correction scenario
 tests/              # unittest contract tests

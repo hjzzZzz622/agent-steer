@@ -1,1 +1,1 @@
-"""Reserved integration namespace; see adjacent README.md. No live transport yet."""
+"""Codex App Server stdio integration with guarded in-flight steering."""

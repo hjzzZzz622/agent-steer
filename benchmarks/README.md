@@ -55,6 +55,19 @@ in this development environment because Claude CLI is unavailable.
 
 ## Extending scenarios
 
+Codex also has an opt-in App Server runner using the three scenarios:
+
+```bash
+PYTHONPATH=src:. python -m benchmarks.codex_run --live \
+  --model YOUR_MODEL_ID --repeats 1 --timeout 120 \
+  --output work/benchmark-codex
+```
+
+Read the [Codex guide](../src/agent_steer/adapters/codex/README.md) for receipt-token
+scoring, quota use and verification status. One repeat is six real model trials.
+This runner does not enforce a monetary budget.
+
+
 Add an entry to `benchmarks/scenarios.py` with `name`, `initial`, `target`,
 `initial_value`, `target_value`, and `guidance`. Do not score free-form language;
 add a deterministic fixture and assert on observed tool arguments/results. Keep
