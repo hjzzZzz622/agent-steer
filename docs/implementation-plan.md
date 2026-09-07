@@ -11,4 +11,4 @@ Spec: design.md.
 - [x] Implement src/agent_steer/core and adapters/base.py, then run tests.
 - [x] Add three documented adapter namespaces, example, README, MIT and pyproject.
 - [x] Build/install locally, run example and tests, inspect tracked files.
-- [ ] Create public hjzzZzz622/agent-steer, publish initial commit, verify remote tree.
+- [x] Create public hjzzZzz622/agent-steer, publish initial commit, verify remote tree.

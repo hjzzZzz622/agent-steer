@@ -1,1 +1,1 @@
-"""Host integration boundaries. Vendor transports are reserved for future releases."""
+"""Host integration boundaries. Claude Code hooks are available; other adapters are reserved."""

@@ -1,1 +1,1 @@
-"""Reserved integration namespace; see adjacent README.md. No live transport yet."""
+"""Claude Code synchronous command hook adapter; see README.md for setup."""

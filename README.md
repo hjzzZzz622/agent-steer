@@ -2,9 +2,11 @@
 
 A lightweight runtime steering layer for AI agents — inject guidance into running agents without restarting the task.
 
-**Status: v0.1.0 alpha skeleton.** The dependency-free Python core and simulated
-example work. Claude Code, Codex, and LangGraph directories reserve integration
-boundaries; they are not installed plugins, MCP servers, or live SDK adapters yet.
+**Status: v0.2.0 alpha.** The Python core and a Claude Code command-hook MVP
+are implemented. Start with the [Claude Code setup and acceptance guide](src/agent_steer/adapters/claude_code/README.md)
+to send guidance from another terminal through a shared SQLite inbox. Codex and
+LangGraph remain reserved integration boundaries. Real Claude model behavior still
+requires user acceptance testing; the automated suite exercises real subprocesses.
 
 ## Why / 核心动机
 
@@ -116,27 +118,33 @@ until the next boundary; conflicting guidance is a host policy decision.
 The reference backend is process-local, loses data on exit, and retains all
 messages in memory. It is unsuitable for long-running or multi-process production
 use. Durable retention, consumer leases, authentication, network transport,
-cancellation, and priority are future scope.
+cancellation, and priority are future scope for the in-memory backend.
+
+`agent_steer.core.sqlite.SQLiteSteeringQueue` now provides local durability and
+serialized hook emission. It preserves submit/get_pending/ack/status, adds session
+discovery and emission tracking, and limits guidance to 8000 characters. SQLite
+storage is not an authentication boundary or a distributed delivery guarantee.
 
 ## Adapter roadmap
 
 | Adapter | Reserved integration | Current implementation |
 | --- | --- | --- |
-| [Claude Code](src/agent_steer/adapters/claude_code/README.md) | MCP + Hooks | Design namespace only |
+| [Claude Code](src/agent_steer/adapters/claude_code/README.md) | SQLite CLI + Hooks (MCP deferred) | Runnable local MVP |
 | [Codex](src/agent_steer/adapters/codex/README.md) | MCP / App Server | Design namespace only |
 | [LangGraph](src/agent_steer/adapters/langgraph/README.md) | Node middleware / checkpoint | Design namespace only |
 
-Shared callback boundary helper is implemented and tested. Real integrations must
-share a backend across processes and map host identities to run IDs explicitly.
+The Claude Code MVP shares SQLite across processes and uses explicit session IDs.
+MCP transport is deferred. Its emitted receipt is separate from explicit acknowledgement;
+see the setup guide for retry behavior and limitations.
 
 ## Repository layout
 
 ```text
 src/agent_steer/
-  core/             # versioned envelope, store protocol, reference queue
+  core/             # envelope, protocol, in-memory queue and SQLite inbox
   adapters/
     base.py         # tested cooperative boundary helper
-    claude_code/    # MCP + Hooks extension point
+    claude_code/    # working command hook + setup guide
     codex/          # MCP / App Server extension point
     langgraph/      # middleware / checkpoint extension point
 examples/           # runnable date-correction scenario

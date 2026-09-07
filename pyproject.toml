@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "agent-steer"
-version = "0.1.0"
+version = "0.2.0"
 description = "A lightweight runtime steering layer for AI agents — inject guidance into running agents without restarting the task."
 readme = "README.md"
 requires-python = ">=3.9"
@@ -12,6 +12,9 @@ license = {file = "LICENSE"}
 authors = [{name = "hjzzZzz622"}]
 dependencies = []
 classifiers = ["Development Status :: 3 - Alpha", "Programming Language :: Python :: 3", "License :: OSI Approved :: MIT License"]
+
+[project.scripts]
+agent-steer = "agent_steer.cli:main"
 
 [project.urls]
 Repository = "https://github.com/hjzzZzz622/agent-steer"

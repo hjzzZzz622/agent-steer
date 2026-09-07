@@ -6,3 +6,6 @@ build/
 dist/
 .pytest_cache/
 .DS_Store
+*.sqlite3
+*.sqlite3-*
+.agent-steer/
