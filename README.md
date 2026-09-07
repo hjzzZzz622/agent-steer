@@ -125,6 +125,13 @@ serialized hook emission. It preserves submit/get_pending/ack/status, adds sessi
 discovery and emission tracking, and limits guidance to 8000 characters. SQLite
 storage is not an authentication boundary or a distributed delivery guarantee.
 
+## Benchmarks
+
+[Benchmark guide](benchmarks/README.md) provides a reproducible transport run and a
+three-scenario Claude behavior benchmark. It writes JSONL trial records plus a Markdown
+summary, scores actual fixture calls/results, and records missing live-model data as
+unknown.
+
 ## Adapter roadmap
 
 | Adapter | Reserved integration | Current implementation |
