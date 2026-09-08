@@ -15,6 +15,8 @@ def main(argv=None):
     config = sub.add_parser('claude-settings', help='generate a new settings file for claude --settings')
     config.add_argument('--output', required=True)
     sub.add_parser('claude-hook', help='read Claude hook JSON on stdin')
+    sub.add_parser('mcp', help='run the dependency-free MCP server over JSON lines')
+    sub.add_parser('skill-path', help='print the bundled interaction skill path')
     codex = sub.add_parser('codex-run', help='start a Codex App Server turn and accept steering')
     codex.add_argument('prompt')
     codex.add_argument('--cwd', required=True)
@@ -43,6 +45,13 @@ def main(argv=None):
             print(json.dumps({'settings': str(output), 'db': db_path}))
             return 0
         queue = SQLiteSteeringQueue(db_path)
+        if args.command == 'mcp':
+            from .mcp import serve
+            serve(queue)
+            return 0
+        if args.command == 'skill-path':
+            print(str(Path(__file__).resolve().parents[2] / 'skills' / 'agent-steer' / 'SKILL.md'))
+            return 0
         if args.command == 'codex-run':
             from .adapters.codex.runner import run_session
             if args.timeout <= 0:

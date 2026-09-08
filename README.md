@@ -2,12 +2,29 @@
 
 A lightweight runtime steering layer for AI agents — inject guidance into running agents without restarting the task.
 
-**Status: v0.3.0 alpha.** The Python core, Claude Code hooks and Codex App Server adapter
+**Status: v0.4.0 alpha.** The Python core, Claude Code hooks, Codex App Server adapter,
+and dependency-free MCP server are implemented.
 are implemented. Start with the [Claude Code setup and acceptance guide](src/agent_steer/adapters/claude_code/README.md)
 to send guidance from another terminal through a shared SQLite inbox. See also the
 [Codex setup and benchmark guide](src/agent_steer/adapters/codex/README.md).
 LangGraph remains a reserved integration boundary. Real model behavior still
 requires user acceptance testing; the automated suite exercises real subprocesses.
+
+## Three installable pieces
+
+Install the package once, then expose the MCP server to an MCP-capable agent:
+
+```bash
+python -m pip install -e .
+agent-steer-mcp --db ~/.agent-steer/inbox.sqlite3
+```
+
+The MCP tools are `steering_submit`, `steering_get_pending`,
+`steering_ask_user`, and `steering_answer`. Copy
+`skills/agent-steer/SKILL.md` into the agent's skills directory so it knows when
+to ask for missing context and when to consume runtime guidance. The core library
+and SQLite queue remain usable directly by Claude hooks, Codex App Server, and
+LangGraph middleware.
 
 ## Why / 核心动机
 
