@@ -26,6 +26,12 @@ to ask for missing context and when to consume runtime guidance. The core librar
 and SQLite queue remain usable directly by Claude hooks, Codex App Server, and
 LangGraph middleware.
 
+## Docs
+
+- [Codex live acceptance](docs/codex-acceptance.md) — mid-run steer with real Codex (`gpt-5.5`)
+- [RFC: runtime steering primitives](docs/rfc-runtime-steering.md) — submit / get_pending / ack contract
+- Adapter guides: [Claude Code](src/agent_steer/adapters/claude_code/README.md), [Codex](src/agent_steer/adapters/codex/README.md), [LangGraph](src/agent_steer/adapters/langgraph/README.md)
+
 ## Why / 核心动机
 
 Agents often discover incomplete data halfway through a task. A user may already
