@@ -58,6 +58,24 @@ queue.submit(
 The next `calculate` boundary can update `snapshot` and `numerator` while preserving
 `loaded_rows` and `completed_steps`. Verify the next query uses those values.
 
+## Live acceptance
+
+Mid-run steer with a real OpenRouter model (optional deps, requires
+`OPENROUTER_API_KEY`):
+
+- Guide: [LangGraph live acceptance](../../../docs/langgraph-acceptance.md)
+- Runnable example:
+
+  ```bash
+  export OPENROUTER_API_KEY='sk-or-...'
+  python -m pip install langgraph langchain-core openai
+  PYTHONPATH=src:. python examples/langgraph_openrouter_live.py
+  ```
+
+The example uses a temp SQLite queue, submits guidance after `plan`, queries fixture
+0906, and calls OpenRouter `openrouter/free`. See the acceptance doc for pass
+criteria and a verified-once record.
+
 ## Testing
 
 ```bash

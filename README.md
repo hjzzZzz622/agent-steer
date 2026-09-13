@@ -29,6 +29,7 @@ LangGraph middleware.
 ## Docs
 
 - [Codex live acceptance](docs/codex-acceptance.md) — mid-run steer with real Codex (`gpt-5.5`)
+- [LangGraph live acceptance](docs/langgraph-acceptance.md) — mid-run steer + OpenRouter free router
 - [RFC: runtime steering primitives](docs/rfc-runtime-steering.md) — submit / get_pending / ack contract
 - Adapter guides: [Claude Code](src/agent_steer/adapters/claude_code/README.md), [Codex](src/agent_steer/adapters/codex/README.md), [LangGraph](src/agent_steer/adapters/langgraph/README.md)
 
